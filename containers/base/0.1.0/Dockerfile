@@ -3,6 +3,7 @@ FROM registry.access.redhat.com/ubi8/ubi:latest
 RUN dnf -y update
 RUN dnf -y module install nodejs:16
 RUN dnf -y install curl openssl openssl-devel gcc gcc-c++ make cyrus-sasl-devel cmake libpq-devel perl
+RUN dnf -y install git
 
 RUN curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain 1.58.0
 
