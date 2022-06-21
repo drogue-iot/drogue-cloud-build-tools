@@ -10,35 +10,35 @@ setup:
 
 .PHONY: build
 build: setup
-build: build/base/0.1.0
-build: build/trunk/0.14.0
-build: build/wasm-bindgen/0.2.80
+build: build/base/0.2.0
+build: build/trunk/0.15.0
+build: build/wasm-bindgen/0.2.81
 build: build/diesel/1.4.1
 
-.PHONY: build/base/0.1.0
-build/base/0.1.0:
-	podman build -f containers/base/0.1.0 -t base:0.1.0
+.PHONY: build/base/%
+build/base/%:
+	podman build -f containers/base/$* -t base:$*
 
-.PHONY: build/trunk/0.14.0
-build/trunk/0.14.0:
-	podman run --rm -ti -v $(CWD)/out/$(ARCH):/out:z base:0.1.0 /root/.cargo/bin/cargo install trunk --version "=0.14.0" --root /out
-	mkdir -p "binaries/$(ARCH)/trunk/0.14.0"
-	install -m 0555 out/$(ARCH)/bin/trunk "binaries/$(ARCH)/trunk/0.14.0/"
-	xz -f "binaries/$(ARCH)/trunk/0.14.0/trunk"
+.PHONY: build/trunk/%
+build/trunk/%:
+	podman run --rm -ti -v $(CWD)/out/$(ARCH):/out:z base:0.2.0 /root/.cargo/bin/cargo install trunk --version "=$*" --root /out
+	mkdir -p "binaries/$(ARCH)/trunk/$*"
+	install -m 0555 out/$(ARCH)/bin/trunk "binaries/$(ARCH)/trunk/$*/"
+	xz -f "binaries/$(ARCH)/trunk/$*/trunk"
 
-.PHONY: build/wasm-bindgen/0.2.80
-build/wasm-bindgen/0.2.80:
-	podman run --rm -ti -v $(CWD)/out/$(ARCH):/out:z base:0.1.0 /root/.cargo/bin/cargo install wasm-bindgen-cli --version "=0.2.80" --root /out
-	mkdir -p "binaries/$(ARCH)/wasm-bindgen/0.2.80"
-	install -m 0555 out/$(ARCH)/bin/wasm-bindgen "binaries/$(ARCH)/wasm-bindgen/0.2.80/"
-	xz -f "binaries/$(ARCH)/wasm-bindgen/0.2.80/wasm-bindgen"
+.PHONY: build/wasm-bindgen/%
+build/wasm-bindgen/%:
+	podman run --rm -ti -v $(CWD)/out/$(ARCH):/out:z base:0.2.0 /root/.cargo/bin/cargo install wasm-bindgen-cli --version "=$*" --root /out
+	mkdir -p "binaries/$(ARCH)/wasm-bindgen/$*"
+	install -m 0555 out/$(ARCH)/bin/wasm-bindgen "binaries/$(ARCH)/wasm-bindgen/$*/"
+	xz -f "binaries/$(ARCH)/wasm-bindgen/$*/wasm-bindgen"
 
-.PHONY: build/diesel/1.4.1
-build/diesel/1.4.1:
-	podman run --rm -ti -v $(CWD)/out/$(ARCH):/out:z base:0.1.0 /root/.cargo/bin/cargo install diesel_cli --no-default-features --features postgres --version "=1.4.1" --root /out
-	mkdir -p "binaries/$(ARCH)/diesel/1.4.1"
-	install -m 0555 out/$(ARCH)/bin/diesel "binaries/$(ARCH)/diesel/1.4.1/"
-	xz -f "binaries/$(ARCH)/diesel/1.4.1/diesel"
+.PHONY: build/diesel/%
+build/diesel/%:
+	podman run --rm -ti -v $(CWD)/out/$(ARCH):/out:z base:0.2.0 /root/.cargo/bin/cargo install diesel_cli --no-default-features --features postgres --version "=$*" --root /out
+	mkdir -p "binaries/$(ARCH)/diesel/$*"
+	install -m 0555 out/$(ARCH)/bin/diesel "binaries/$(ARCH)/diesel/$*/"
+	xz -f "binaries/$(ARCH)/diesel/$*/diesel"
 
 check:
 	git status
