@@ -11,8 +11,8 @@ setup:
 .PHONY: build
 build: setup
 build: build/base/0.2.0
-build: build/trunk/0.15.0
-build: build/wasm-bindgen/0.2.81
+build: build/trunk/0.16.0
+build: build/wasm-bindgen/0.2.82
 build: build/diesel/1.4.1
 
 .PHONY: build/base/%
