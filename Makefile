@@ -14,10 +14,11 @@ build: build/base/0.2.0
 build: build/trunk/0.16.0
 build: build/wasm-bindgen/0.2.82
 build: build/diesel/1.4.1
+build: build/diesel/2.0.1
 
 .PHONY: build/base/%
 build/base/%:
-	podman build -f containers/base/$* -t base:$*
+	podman build -f containers/base/$*/Dockerfile -t base:$*
 
 .PHONY: build/trunk/%
 build/trunk/%:
